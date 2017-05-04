@@ -16,13 +16,11 @@ globals:
   beforeEach : false
   afterEach : false
   after : false
-  before : false
   beforeEachChapter: false
   describeScenario: false
   describeChapter: false
   describeStep: false
   document : false
-  window: false
   File : false
   FormData: false
   QCodeDecoder: false
