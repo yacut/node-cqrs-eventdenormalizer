@@ -2,7 +2,18 @@ var expect = require('expect.js'),
   async = require('async'),
   revisionGuardStore = require('../../lib/revisionGuardStore'),
   Base = require('../../lib/revisionGuardStore/base'),
-  InMemory = require('../../lib/revisionGuardStore/databases/inmemory');
+  InMemory = require('../../lib/revisionGuardStore/databases/dynamodb');
+
+// precondition: dynalite is running
+// TODO: remove aws from test later
+  var AWS = require('aws-sdk');
+  AWS.config.update({
+    region: 'us-east-1',
+    accessKeyId: 'some-id',
+    secretAccessKey: 'some-secret',
+    endpoint: 'http://localhost:4567',
+  });
+//
 
 describe('revisionGuardStore', function() {
 
@@ -77,7 +88,7 @@ describe('revisionGuardStore', function() {
 
     describe('with options containing a type property with the value of', function() {
 
-      var types = ['inmemory', 'mongodb', 'tingodb', 'redis'/*, 'couchdb'*/];
+      var types = ['dynamodb', /*'inmemory', 'mongodb', 'tingodb', 'redis'/*, 'couchdb'*/];
 
       types.forEach(function(type) {
 
