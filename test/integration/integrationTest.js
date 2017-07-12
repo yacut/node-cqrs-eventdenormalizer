@@ -2,6 +2,17 @@ var expect = require('expect.js'),
   _ = require('lodash'),
   api = require('../../index');
 
+// precondition: dynalite is running
+// TODO: remove aws from test later
+  var AWS = require('aws-sdk');
+  AWS.config.update({
+    region: 'us-east-1',
+    accessKeyId: 'some-id',
+    secretAccessKey: 'some-secret',
+    endpoint: 'http://localhost:4567',
+  });
+//
+
 describe('integration', function () {
 
   describe('format 1', function () {
@@ -9,7 +20,15 @@ describe('integration', function () {
     var denorm;
 
     before(function (done) {
-      denorm = api({ denormalizerPath: __dirname + '/fixture/set1', commandRejectedEventName: 'rejectedCommand', revisionGuard: { queueTimeout: 200, queueTimeoutMaxLoops: 2 } });
+      denorm = api({
+        denormalizerPath: __dirname + '/fixture/set1',
+        commandRejectedEventName: 'rejectedCommand',
+        revisionGuard: {
+          type: 'dynamodb',
+          queueTimeout: 200,
+          queueTimeoutMaxLoops: 2
+        }
+      });
       denorm.defineEvent({
         correlationId: 'correlationId',
         id: 'id',
